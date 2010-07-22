@@ -43,7 +43,7 @@ Because Sinatra gives you a default not\_found and error do :production that are
 
     configure :production do
       not_found do
-        "We're so sorry, but we don't what this is"
+        "We're so sorry, but we don't know what this is"
       end
   
       error do
