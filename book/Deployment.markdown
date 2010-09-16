@@ -9,16 +9,19 @@ This is the easiest configuration + deployment option.  [Heroku] has full suppor
 Steps to deploy to Heroku:
 
 * Create an [account](http://heroku.com/signup) if you don't have one
-* `sudo gem install heroku`
+* `gem install heroku`
 * Make a config.ru in the root-directory
 * Create the app on heroku
 * Push to it
 
-1. An example config.ru file (Heroku sets `RACK_ENV` to production for you)
+1. Here is an example config.ru file that does two things.  First, it requires
+   your main app file, whatever it's called. In the example, it will look for
+   `myapp.rb`.  Second, run your application.  If you're subclassing, use the
+   subclass's name, otherwise use Sinatra::Application.
 
-       require "myapp"
+        require "myapp"
 
-       run Sinatra::Application
+        run Sinatra::Application
 
 2. Create the app and push to it
 
@@ -141,25 +144,26 @@ You can find additional documentation at the Passenger Github repository.
        # a vendored version of sinatra - not necessary if you use the gem
        domain.com/sinatra
 
-3. Creating the "Rackup file" (rack configuration file) `config.ru` -- the `require 'app'`
-   line should require the actual Sinatra app you have written.
+3. Here is an example config.ru file that does two things.  First, it requires
+   your main app file, whatever it's called. In the example, it will look for
+   `myapp.rb`.  Second, run your application.  If you're subclassing, use the
+   subclass's name, otherwise use Sinatra::Application.
 
-       ## Passenger should set RACK_ENV for Sinatra
+        require "myapp"
 
-       require 'app'
-       
-       run Sinatra::Application
+        run Sinatra::Application
 
 4. A very simple Sinatra application
 
-       # this is test.rb referred to above
-       get '/' do
-         "Worked on dreamhost"
-       end
-        
-       get '/foo/:bar' do
-         "You asked for foo/#{params[:bar]}"
-       end
+       # this is myapp.rb referred to above
+        require 'sinatra'
+        get '/' do
+          "Worked on dreamhost"
+        end
+         
+        get '/foo/:bar' do
+          "You asked for foo/#{params[:bar]}"
+        end
 
 And that's all there is to it! Once it's all setup, point your browser at your 
 domain, and you should see a 'Worked on Dreamhost' page. To restart the 
@@ -193,7 +197,10 @@ Luckily, Rack supports various connectors, including CGI and FastCGI. Unluckily
 for us, FastCGI doesn't quite work with the current Sinatra release without some tweaking.
 
 ### Deployment with Sinatra version 0.9
-From version 9.0 Sinatra requires Rack 0.9.1, however FastCGI wrapper from this version seems not working well with Sinatra unless you define your application as a subclass of Sinatra::Application class and run this application directly as a Rack application.
+From version 0.9.0 Sinatra requires Rack 0.9.1, however FastCGI wrapper from
+this version seems not working well with Sinatra unless you define your
+application as a subclass of Sinatra::Application class and run this
+application directly as a Rack application.
 
 Steps to deploy via FastCGI:
 * htaccess
@@ -251,67 +258,3 @@ Steps to deploy via FastCGI:
         Rack::Handler::FastCGI.run(builder)
 
 
-### Deployment with Sinatra version <= 0.3
-In version 0.3 to get a simple 'hello world' Sinatra application up and running via FastCGI, you have to pulling down the current Sinatra code, and hacking at it a bit. Don't
-worry though, it only requires commenting out a few lines, and tweaking
-another.
-
-Steps to deploy:
-
-* .htaccess
-* dispatch.fcgi
-* Tweaked sinatra.rb
-
-
-1. .htaccess
-       RewriteEngine on
-      
-       AddHandler fastcgi-script .fcgi
-       Options +FollowSymLinks +ExecCGI
-      
-       RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
-
-2. dispatch.fcgi
- 
-       #!/usr/bin/ruby
-      
-       require 'rubygems'
-       require 'sinatra/lib/sinatra'
-      
-       fastcgi_log = File.open("fastcgi.log", "a")
-       STDOUT.reopen fastcgi_log
-       STDERR.reopen fastcgi_log
-       STDOUT.sync = true
-      
-       set :logging, false
-       set :server, "FastCGI"
-      
-       module Rack
-         class Request
-           def path_info
-             @env["REDIRECT_URL"].to_s
-           end
-           def path_info=(s)
-             @env["REDIRECT_URL"] = s.to_s
-           end
-         end
-       end
-      
-       load 'app.rb'
-
-3. sinatra.rb - Replace this function with the new version here (commenting out the `puts` lines)
-
-       def run
-         begin
-           #puts "== Sinatra has taken the stage on port #{port} for #{env} with backup by #{server.name}"
-           require 'pp'
-           server.run(application) do |server|
-             trap(:INT) do
-               server.stop
-               #puts "\n== Sinatra has ended his set (crowd applauds)"
-             end
-           end
-         rescue Errno::EADDRINUSE => e
-           #puts "== Someone is already performing on port #{port}!"
-         end
-       end
