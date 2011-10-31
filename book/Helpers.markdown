@@ -16,7 +16,7 @@ Example:
         "#{name}bar"
       end
     end
-    
+
     get '/:name' do
       bar(params[:name])
     end
@@ -25,7 +25,7 @@ Implemention of rails style partials
 ------------------------------------
 
 Using partials in your views is a great way to keep them clean.  Since Sinatra takes the hands off approach to framework
-design, you'll have to implement a partial handler yourself.  
+design, you'll have to implement a partial handler yourself.
 
 Here is a really basic version:
 
@@ -40,9 +40,9 @@ A more advanced version that would handle passing local options, and looping ove
 
     # Render the page once:
     # Usage: partial :foo
-    # 
+    #
     # foo will be rendered once for each element in the array, passing in a local variable named "foo"
-    # Usage: partial :foo, :collection => @my_foos    
+    # Usage: partial :foo, :collection => @my_foos
 
     helpers do
       def partial(template, *args)
@@ -51,7 +51,7 @@ A more advanced version that would handle passing local options, and looping ove
         if collection = options.delete(:collection) then
           collection.inject([]) do |buffer, member|
             buffer << haml(template, options.merge(
-                                      :layout => false, 
+                                      :layout => false,
                                       :locals => {template.to_sym => member}
                                     )
                          )

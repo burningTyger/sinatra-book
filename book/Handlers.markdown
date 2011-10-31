@@ -19,24 +19,24 @@ In handlers you can access submitted form parameters directly via the params has
     end
 
 Parameters can be accessed by either a string, or symbol key:
-    
+
     params[:name]
     params["name"]
-    
+
 ### Nested form parameters
 
 The support for Rails-like nested parameters has been built-in since Sinatra
-version 0.9.0. 
+version 0.9.0.
 
     <form>
       <input ... name="post[title]" />
       <input ... name="post[body]" />
       <input ... name="post[author]" />
     </form>
-    
+
 
 The parameters in this case became as a hash:
-    
+
     {"post"=>{ "title"=>"", "body"=>"", "author"=>"" }}
 
 Therefore in handlers you can use nested parameters like a regular hash:
@@ -180,7 +180,7 @@ statuses than 404 is to raise a special exception subclass.
       raise NotFound
     end
 
-Sinatra defines the `NotFound` exception.  To define your own, subclass 
+Sinatra defines the `NotFound` exception.  To define your own, subclass
 exception and define a code method returning the HTTP status code you
 want.  For example, to return a 401 simply in your app you can use this code:
 

@@ -17,7 +17,7 @@ specify the actual gems required by your application, and the Gemfile.lock is a
 definition of all the required gems and the exact versions used by your
 application. As it's necessary for other developers to know exactly what
 versions of third party libraries you're using, the Gemfile.lock is recommended
-to be checked into source control. 
+to be checked into source control.
 
 **Gemcutter**
 
@@ -29,7 +29,7 @@ that uses Sinatra as a main dependency and RSpec for testing:
     source "http://rubygems.org/"
 
     # declare the sinatra dependency
-    gem "sinatra" 
+    gem "sinatra"
 
     # setup our test group and require rspec
     group :test do
@@ -49,8 +49,8 @@ repository contains a valid gemspec for the gem you're trying to install.
 
     # and lets we use the rspec 2.0 release candidate from git
     group :test do
-      gem "rspec", :git => "http://github.com/rspec/rspec.git", 
-        :tag => "v2.0.0.rc"  
+      gem "rspec", :git => "http://github.com/rspec/rspec.git",
+        :tag => "v2.0.0.rc"
     end
 
     # as well as i18n from git
@@ -65,8 +65,8 @@ commands.
 **Installing**
 
     # Install specified gems from your Gemfile and Gemfile.lock
-    bundle install 
-   
+    bundle install
+
     # Inspect your bundle to see if you've met your applications requirements
     bundle check
 
@@ -75,8 +75,8 @@ commands.
 
     # Show source location of a specific gem in your bundle
     bundle show [gemname]
-    
-    # Generate a skeleton Gemfile to start your path to using Bundler 
+
+    # Generate a skeleton Gemfile to start your path to using Bundler
     bundle init
 
 **Updating**
@@ -115,7 +115,7 @@ Now if say you skip the last step, and just auto require gems from your groups
     require 'rubygems'
 
     require 'bundler'
-    
+
     # this will require all the gems not specified to a given group (default)
     # and gems specified in your test group
     Bundler.require(:default, :test)
@@ -125,11 +125,11 @@ Now if say you skip the last step, and just auto require gems from your groups
 *    [Bundler's Purpose and Rationale](http://gembundler.com/rationale.html) -
 For a longer explanation of what Bundler does and how it works
 *    [Gemfile Manual](http://gembundler.com/man/gemfile.5.html)
-*    [CLI Manual](http://gembundler.com/man/bundle.1.html) - Basic command 
+*    [CLI Manual](http://gembundler.com/man/bundle.1.html) - Basic command
 line utilities provided with Bundler
-*    [Gems from Git repositories](http://gembundler.com/git.html) - Using git 
+*    [Gems from Git repositories](http://gembundler.com/git.html) - Using git
 repositories with your Gemfile
-*    [Using Groups](http://gembundler.com/groups.html) - Using groups with 
+*    [Using Groups](http://gembundler.com/groups.html) - Using groups with
 bundler
 *    [bundle install manual](http://gembundler.com/man/bundle-install.1.html)
 *    [bundle update manual](http://gembundler.com/man/bundle-update.1.html)
@@ -184,7 +184,7 @@ If you use the top level DSL, you just have to require it in development mode:
 
     require "sinatra"
     require "sinatra/reloader" if development?
-    
+
     get('/') { 'change me!' }
 
 When using a modular style application, you have to register the
@@ -192,7 +192,7 @@ When using a modular style application, you have to register the
 
     require "sinatra/base"
     require "sinatra/reloader"
-    
+
     class MyApp < Sinatra::Base
       configure :development do
         register Sinatra::Reloader
