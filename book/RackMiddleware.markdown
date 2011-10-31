@@ -7,10 +7,10 @@ Sinatra makes building Rack middleware pipelines a cinch via a top-level `use` m
 
     require 'sinatra'
     require 'my_custom_middleware'
-    
+
     use Rack::Lint
     use MyCustomMiddleware
-    
+
     get '/hello' do
       'Hello World'
     end

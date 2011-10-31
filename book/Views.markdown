@@ -50,7 +50,7 @@ This will render ./views/index.haml
 [Haml's
 options](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html#options) can
 be set globally through Sinatra’s configurations, see [Options and
-Configurations](#configuration), and overridden on an individual basis. 
+Configurations](#configuration), and overridden on an individual basis.
 
 ### Erubis
 
@@ -218,7 +218,7 @@ The rdiscount gem/library is required to render Markdown templates:
 
     ## You'll need to require rdiscount in your app
     require "rdiscount"
-  
+
     get '/' do
       markdown :index
     end
@@ -349,10 +349,10 @@ directory structure.  As an example, it should look like:
           | - edit.haml
 
 Then you can call the haml view helper with a symbol pointing to the path of the view.
-There's a syntax trick for this in ruby, to convert a string to a symbol.  
+There's a syntax trick for this in ruby, to convert a string to a symbol.
 
     :"users/index"
-    
+
 You can also use the more verbose version of the same thing:
 
     "users/index".to_sym
@@ -415,7 +415,7 @@ embed templates directly into its file.
 
     @@ index
     %div.title Hello world!!!!!
-    
+
 NOTE: Inline templates defined in the source file that requires sinatra are
 automatically loaded. Call `enable :inline_templates` explicitly if you
 have inline templates in other source files.
@@ -467,7 +467,7 @@ that work.
         #TODO: Implementation
       end
     end
-    
+
 ### Accessing Variables in Templates
 
 Templates are evaluated within the same context as route handlers. Instance

@@ -30,7 +30,7 @@ Sinatra will pass you the specific exception that was raised via the
     error do
       'Sorry there was a nasty error - ' + request.env['sinatra.error'].name
     end
-  
+
 A quick example of a custom error class:
 
     # Define an error class
@@ -66,7 +66,7 @@ handlers in a configure block.
         haml :'404'
 >>>>>>> d60076e5257a8867518a628448fb594311fcefbc
       end
-  
+
       error do
         haml :'500'
       end

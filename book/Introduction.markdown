@@ -49,7 +49,7 @@ with Ruby, or installing HAML as your first template language.
 
 ### Living on the Edge
 
-The _edge_ version of Sinatra lives in its Git repository, available at 
+The _edge_ version of Sinatra lives in its Git repository, available at
 **<http://github.com/sinatra/sinatra/tree/master>**.
 
 You can use the _edge_ version to try new functionality or to contribute to the
@@ -95,9 +95,9 @@ Sinatra is installed, how about making your first application?
     # If you're using bundler, you will need to add these 2 lines
     require 'bundler'
     Bundler.setup
-    
+
     require 'sinatra'
-    
+
     get '/' do
       "Hello world, it's #{Time.now} at the server!"
     end
@@ -162,7 +162,7 @@ For more information about the Ruby language visit the following links:
 * <http://www.ruby-doc.org/core-1.8.7/index.html>
 * <http://www.ruby-doc.org/docs/ProgrammingRuby/>
 
-Need Help? 
+Need Help?
 ----------
 
 The Sinatra club is small, but super-friendly.  Join us on IRC at

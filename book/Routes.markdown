@@ -3,7 +3,7 @@ Routes
 
 HTTP methods
 ------------
-Sinatra's routes are designed to respond to the HTTP request methods.  
+Sinatra's routes are designed to respond to the HTTP request methods.
 
 * GET
 * POST
@@ -21,7 +21,7 @@ to the browser of the client.
     get '/' do
       "Hello Sinatra!"
     end
-    
+
 Sinatra will also automatically parse parameters from the URL:
 
     # /name/Chris will return "You said your name was Chris" to the browser
@@ -48,7 +48,7 @@ User agent
     get '/foo', :agent => /Songbird (\d\.\d)[\d\/]*?/ do
       "You're using Songbird version #{params[:agent][0]}"
     end
-    
+
     get '/foo' do
       # matches non-songbird browsers
     end
@@ -64,7 +64,7 @@ this.
       # matches /say/hello/to/world
       params["splat"] # => ["hello", "world"]
     end
-    
+
     get '/download/*.*' do
       # matches /download/path/to/file.xml
       params["splat"] # => ["path/to/file", "xml"]
@@ -75,7 +75,7 @@ HTTP Methods
 
 The other HTTP methods are requested exactly the same as "get" routes.  You
 simply use the `post`, `put`, or `delete` functions to define the route, rather
-then the `get` one. 
+then the `get` one.
 
     get '/foo' do
     end
@@ -109,9 +109,9 @@ a POST, but Sinatra will interpret it as the desired method. For example:
 Then, include the Rack::MethodOverride middleware into your app:
 
     require 'sinatra'
-    
+
     use Rack::MethodOverride
-    
+
     delete '/destroy_it' do
       # destroy it
     end
@@ -119,10 +119,10 @@ Then, include the Rack::MethodOverride middleware into your app:
 Or, if you are subclassing Sinatra::Base, do it like this:
 
     require 'sinatra/base'
-    
+
     class MyApp < Sinatra::Base
       use Rack::MethodOverride
-      
+
       delete '/destroy_it' do
         # destroy it
       end

@@ -9,7 +9,7 @@ Before filters are run before or after the route has been processed:
     before do
       MyStore.connect unless MyStore.connected?
     end
-    
+
     get '/' do
       @list = MyStore.load_list
       haml :index
@@ -26,15 +26,15 @@ It is also possible to have multiple filters:
 
     before { do_something }
     before { something_else }
-    
+
     get '/' do
       # ...
     end
-    
+
     after do
       do_something
     end
-    
+
     after do
       something_else
     end
@@ -48,9 +48,9 @@ Filters are run in the same context as routes, and can therefore access all inst
       attr_reader :current_user
       def user(id) User.find(id) end
     end
-    
+
     before { @current_user = user session['user_id'] }
-    
+
     get '/admin' do
       pass unless current_user.admin?
       erb :"admin/index"
@@ -77,7 +77,7 @@ Filters optionally taking a pattern, causing them to be evaluated only if the re
     before '/protected/*' do
       authenticate!
     end
-  
+
     after '/create/:slug' do |slug|
       session[:last_slug] = slug
     end

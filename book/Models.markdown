@@ -11,9 +11,9 @@ show started, and this example will include a 'Post' model.
     require 'rubygems'
     require 'sinatra'
     require 'datamapper'
-    
+
     DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
-    
+
     class Post
         include DataMapper::Resource
         property :id, Serial
@@ -21,7 +21,7 @@ show started, and this example will include a 'Post' model.
         property :body, Text
         property :created_at, DateTime
     end
-    
+
     # automatically create the post table
     Post.auto_migrate! unless Post.table_exists?
 
@@ -68,7 +68,7 @@ Create the Model class:
     end
 
 Create the route:
-   
+
     get '/' do
      @links = Link.all
      haml :links
@@ -93,12 +93,12 @@ assumes you already have a 'posts' table in your database):
 
     class Post < ActiveRecord::Base
     end
-    
+
     get '/' do
       @posts = Post.all()
-      erb :index 
+      erb :index
     end
-    
+
 This will render ./views/index.erb:
 
     <% for post in @posts %>

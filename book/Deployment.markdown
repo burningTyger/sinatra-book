@@ -80,7 +80,7 @@ Sinatra application.
          'Hello, nginx and unicorn!'
       end
 
-    end 
+    end
 
 Now that we have our application in place, let's get on to configuring our
 proxy.
@@ -104,7 +104,7 @@ directories, if you haven't already:
 
 Once those are in place, we're ready to setup our `unicorn.rb` configuration.
 
-    # set path to app that will be used to configure unicorn, 
+    # set path to app that will be used to configure unicorn,
     # note the trailing slash in this example
     @dir = "/path/to/app/"
 
@@ -115,7 +115,7 @@ Once those are in place, we're ready to setup our `unicorn.rb` configuration.
 
     timeout 30
 
-    # Specify path to socket unicorn listens to, 
+    # Specify path to socket unicorn listens to,
     # we will use this in our nginx.conf later
     listen "#{@dir}tmp/sockets/unicorn.sock", :backlog => 64
 
@@ -124,7 +124,7 @@ Once those are in place, we're ready to setup our `unicorn.rb` configuration.
 
     # Set log file paths
     stderr_path "#{@dir}log/unicorn.stderr.log"
-    stdout_path "#{@dir}log/unicorn.stdout.log" 
+    stdout_path "#{@dir}log/unicorn.stdout.log"
 
 As you can see, unicorn is extremely simple to setup. Let's move onto nginx
 now, soon enough you'll be well on your way to serving up all kinds of great
@@ -141,19 +141,19 @@ some of the configuration out into `sites-enabled` and other nginx conventions.
 However, for most common and simple implementations this guide should do the
 trick.
 
-    # this sets the user nginx will run as, 
+    # this sets the user nginx will run as,
     #and the number of worker processes
     user nobody nogroup;
     worker_processes  1;
 
-    # setup where nginx will log errors to 
+    # setup where nginx will log errors to
     # and where the nginx process id resides
     error_log  /var/log/nginx/error.log;
     pid        /var/run/nginx.pid;
 
     events {
       worker_connections  1024;
-      # set to on if you have more than 1 worker_processes 
+      # set to on if you have more than 1 worker_processes
       accept_mutex off;
     }
 
@@ -162,10 +162,10 @@ trick.
 
       default_type application/octet-stream;
       access_log /tmp/nginx.access.log combined;
-     
+
       # use the kernel sendfile
       sendfile        on;
-      # prepend http headers before sendfile() 
+      # prepend http headers before sendfile()
       tcp_nopush     on;
 
       keepalive_timeout  65;
@@ -188,13 +188,13 @@ trick.
       server {
         # replace with your domain name
         server_name my-sinatra-app.com;
-        # replace this with your static Sinatra app files, root + public 
+        # replace this with your static Sinatra app files, root + public
         root /path/to/app/public;
         # port to listen for requests on
         listen 80;
-        # maximum accepted body size of client request 
+        # maximum accepted body size of client request
         client_max_body_size 4G;
-        # the server will close connections after this time 
+        # the server will close connections after this time
         keepalive_timeout 5;
 
         location / {
@@ -202,7 +202,7 @@ trick.
           proxy_set_header Host $http_host;
           proxy_redirect off;
           if (!-f $request_filename) {
-            # pass to the upstream unicorn server mentioned above 
+            # pass to the upstream unicorn server mentioned above
             proxy_pass http://unicorn_server;
             break;
           }
@@ -278,20 +278,20 @@ proxy setup using Lighttpd and Thin.
 
 1. Install Lighttpd and Thin
 
-       # Figure out lighttpd yourself, it should be handled by your 
+       # Figure out lighttpd yourself, it should be handled by your
        # linux distro's package manager
-        
+
        # For thin:
        gem install thin
 
-2. Create your rackup file -- the `require 'app'` line should require the actual 
+2. Create your rackup file -- the `require 'app'` line should require the actual
    Sinatra app you have written.
 
        ## This is not needed for Thin > 1.0.0
        ENV['RACK_ENV'] = "production"
 
        require 'app'
-       
+
        run Sinatra::Application
 
 3. Setup a config.yml - change the /path/to/my/app path to reflect reality.
@@ -311,7 +311,7 @@ proxy setup using Lighttpd and Thin.
          max_persistent_conns: 512
          daemonize: true
 
-4. Setup lighttpd.conf - change mydomain to reflect reality. Also make 
+4. Setup lighttpd.conf - change mydomain to reflect reality. Also make
    sure the first port here matches up with the port setting in config.yml.
 
        $HTTP["host"] =~ "(www\.)?mydomain\.com"  {
@@ -324,8 +324,8 @@ proxy setup using Lighttpd and Thin.
                          )
        }
 
-5. Start thin and your application. I have a rake script so I can just 
-   call "rake start" rather than typing this in. 
+5. Start thin and your application. I have a rake script so I can just
+   call "rake start" rather than typing this in.
 
        thin -s 2 -C config.yml -R config.ru start
 
@@ -339,21 +339,21 @@ the nginx web server
       server 127.0.0.1:5000;
       server 127.0.0.1:5001;
     }
-    
+
     server {
       listen    www.mydomain.com:80
       server_name  www.mydomain.com live;
       access_log /path/to/logfile.log
-      
+
       location / {
         proxy_pass http://www_mydomain_com;
       }
-      
+
     }
 
-*Variation* - More Thin instances - To add more thin instances, change the 
-`-s 2` parameter on the thin start command to be how ever many servers you want. 
-Then be sure lighttpd proxies to all of them by adding more lines to the proxy 
+*Variation* - More Thin instances - To add more thin instances, change the
+`-s 2` parameter on the thin start command to be how ever many servers you want.
+Then be sure lighttpd proxies to all of them by adding more lines to the proxy
 statements. Then restart lighttpd and everything should come up as expected.
 
 
@@ -385,7 +385,7 @@ Once you've got that installed you can build the passenger apache module.
 
 Follow the instructions given by the installer.
 
-### Deploying your app 
+### Deploying your app
 
 Passenger lets you easily deploy Sinatra apps through the Rack interface.
 
@@ -412,7 +412,7 @@ rackup file, `config.ru`.
     require 'sinatra'
     require 'app.rb'
 
-    run Sinatra::Application 
+    run Sinatra::Application
 
 **Virtual Host**
 
@@ -426,7 +426,7 @@ Host](http://httpd.apache.org/docs/2.2/vhosts/) for your app.
             Allow from all
             Options -MultiViews
         </Directory>
-    </VirtualHost>    
+    </VirtualHost>
 
 That should just about do it for your basic apache and passenger configuration.
 For more specific information please visit the [official modrails
@@ -492,33 +492,33 @@ via Passenger with relative ease. Here's how.
         get '/' do
           "Worked on dreamhost"
         end
-         
+
         get '/foo/:bar' do
           "You asked for foo/#{params[:bar]}"
         end
 
-And that's all there is to it! Once it's all setup, point your browser at your 
-domain, and you should see a 'Worked on Dreamhost' page. To restart the 
+And that's all there is to it! Once it's all setup, point your browser at your
+domain, and you should see a 'Worked on Dreamhost' page. To restart the
 application after making changes, you need to run `touch tmp/restart.txt`.
 
 Please note that currently passenger 2.0.3 has a bug where it can cause Sinatra to not find
 the view directory. In that case, add `:views => '/path/to/views/'` to the Sinatra options
 in your Rackup file.
 
-You may encounter the dreaded "Ruby (Rack) application could not be started" 
-error with this message "can't activate rack (>= 0.9.1, < 1.0, runtime), 
+You may encounter the dreaded "Ruby (Rack) application could not be started"
+error with this message "can't activate rack (>= 0.9.1, < 1.0, runtime),
 already activated rack-0.4.0". This happens because DreamHost has version 0.4.0
 installed, when recent versions of Sinatra require more recent versions of Rack.
-The solution is to explicitly require the rack and sinatra gems in your 
+The solution is to explicitly require the rack and sinatra gems in your
 config.ru. Add the following two lines to the start of your config.ru file:
-  
+
        require '/home/USERNAME/.gem/ruby/1.8/gems/rack-VERSION-OF-RACK-GEM-YOU-HAVE-INSTALLELD/lib/rack.rb'
        require '/home/USERNAME/.gem/ruby/1.8/gems/sinatra-VERSION-OF-SINATRA-GEM-YOU-HAVE-INSTALLELD/lib/sinatra.rb'
 
 
 FastCGI                                        {#deployment_fastcgi}
 -------
-The standard method for deployment is to use Thin or Mongrel, and have a 
+The standard method for deployment is to use Thin or Mongrel, and have a
 reverse proxy (lighttpd, nginx, or even Apache) point to your bundle of servers.
 
 But that isn't always possible. Cheaper shared hosting (like Dreamhost) won't
@@ -542,10 +542,10 @@ Steps to deploy via FastCGI:
 1. .htaccess
 
         RewriteEngine on
-        
+
         AddHandler fastcgi-script .fcgi
         Options +FollowSymLinks +ExecCGI
-        
+
         RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
 
 2. Subclass your application as Sinatra::Application
@@ -559,10 +559,10 @@ Steps to deploy via FastCGI:
 3. dispatch.fcgi - Run this application directly as a Rack application
 
         #!/usr/local/bin/ruby
-    
+
         require 'rubygems'
         require 'rack'
-        
+
         fastcgi_log = File.open("fastcgi.log", "a")
         STDOUT.reopen fastcgi_log
         STDERR.reopen fastcgi_log
